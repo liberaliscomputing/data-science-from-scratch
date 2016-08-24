@@ -93,14 +93,23 @@ class DataSciencester(object):
 		return interests_by_user_id
 
 	def most_common_interests_with(self, user):
+		# find friends with common interests
 		return Counter(user_id 
 			for interest in self.interests_by_user_id()[user['id']]
 			for user_id in self.user_ids_by_interest()[interest] 
 			if user_id != user['id'])
 
+	def topic_of_interest(self):
+		# show the frequency of interests
+		words_and_counts = Counter(word 
+			for user_id, interest in self.interests 
+			for word in interest.lower().split())
+		return words_and_counts
+
 if __name__ == '__main__':
 	path = 'data/data.json'
 	data = json.loads(open(path).read())
 	dsc = DataSciencester(data)
-	dsc.list_friends()
-	print dsc.most_common_interests_with(dsc.users[0])
+	#dsc.list_friends()
+	print dsc.topic_of_interest()
+
